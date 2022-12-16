@@ -9,28 +9,34 @@ export const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const handleFeedback = e => {
-    const { name } = e.currentTarget;
+  const handleFeedback = optionName => {
     
-    switch (name) {
+    switch (optionName) {
       case 'good':
-        setGood((state => state + 1))
+        setGood(state => state + 1);
         break;
-    
+
+      case 'neutral':
+        setNeutral(state => state + 1);
+        break;
+
+      case 'bad':
+        setBad(state => state + 1);
+        break;
+
       default:
-        break;
+        throw new Error(`Can't handle this ${optionName}`);
     }
   };
 
+  const options = ['good', 'neutral', 'bad'];
   const total = good + neutral + bad;
   const positivePercentage = Math.round((good / total) * 100);
 
     return (
       <Section title="Please leave feedback">
         <FeedbackOptions
-          good={setGood(good)}
-          neutral={setNeutral(neutral)}
-          bad={setBad(bad)}
+          options={options}
           onLeaveFeedback={handleFeedback}
         />
         {total > 0 ? (
@@ -47,43 +53,3 @@ export const App = () => {
       </Section>
     );
   }
-
-// export class oldApp extends Component {
-//   state = {
-//     good: 0,
-//     neutral: 0,
-//     bad: 0
-//   };
-
-//   handleFeedback = e => {
-//     const { name } = e.currentTarget;
-//     this.setState(prevState => ({ [name]: prevState[name] + 1 }));
-//   };
-
-//   render() {
-//     const { good, neutral, bad } = this.state;
-
-//     const total = good + neutral + bad;
-//     const positivePercentage = Math.round((good / total) * 100);
-
-//     return (
-//       <Section title="Please leave feedback">
-//         <FeedbackOptions
-//           options={Object.keys(this.state)}
-//           onLeaveFeedback={this.handleFeedback}
-//         />
-//         {total > 0 ? (
-//           <Statistics
-//             good={good}
-//             neutral={neutral}
-//             bad={bad}
-//             total={total}
-//             positivePercentage={positivePercentage}
-//           />
-//         ) : (
-//           <Notification message="No feedback given" />
-//         )}
-//       </Section>
-//     );
-//   }
-// }
